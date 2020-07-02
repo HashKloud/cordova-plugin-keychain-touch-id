@@ -370,20 +370,20 @@ public class FingerprintAuthAux {
             //Get old shared Preferences e.g: "com.outsystems.android.WebApplicationActivity"
             SharedPreferences oldSharedPref = cordova.getActivity().getApplicationContext().getSharedPreferences(oldActivityPackageName,Context.MODE_PRIVATE);
             String enc = oldSharedPref.getString("fing" + key, "");
-            
+
             if (!enc.equals("")) {
                 SharedPreferences newSharedPref = cordova.getActivity().getApplicationContext().getSharedPreferences(SHARED_PREFS_NAME,Context.MODE_PRIVATE);
                 SharedPreferences.Editor newEditor = newSharedPref.edit();
                 newEditor.putString("fing" + key, oldSharedPref.getString("fing" + key, ""));
                 newEditor.putString("fing_iv" + key, oldSharedPref.getString("fing_iv" + key, ""));
                 newEditor.commit();
-                
+
                 SharedPreferences.Editor oldEditor = oldSharedPref.edit();
                 oldEditor.remove("fing" + key);
                 oldEditor.remove("fing_iv" + key);
                 oldEditor.commit();
             }
-            
+
             mPluginResult = new PluginResult(PluginResult.Status.OK);
             mCallbackContext.sendPluginResult(mPluginResult);
             return true;
@@ -469,14 +469,12 @@ public class FingerprintAuthAux {
             errorMessage = getSecretKeyExceptionErrorPrefix + "KeyStoreException";
         } catch (CertificateException e) {
             errorMessage = getSecretKeyExceptionErrorPrefix + "CertificateException";
-        } catch (UnrecoverableKeyException e) {
-            errorMessage = getSecretKeyExceptionErrorPrefix + "UnrecoverableKeyException";
+        } catch (UnrecoverableEntryException e) {
+            errorMessage = getSecretKeyExceptionErrorPrefix + "UnrecoverableEntryException or UnrecoverableKeyException";
         } catch (IOException e) {
             errorMessage = getSecretKeyExceptionErrorPrefix + "IOException";
         } catch (NoSuchAlgorithmException e) {
             errorMessage = getSecretKeyExceptionErrorPrefix + "NoSuchAlgorithmException";
-        } catch (UnrecoverableEntryException e) {
-            errorMessage = getSecretKeyExceptionErrorPrefix + "UnrecoverableEntryException";
         }
         if (key == null) {
             Log.e(TAG, errorMessage);
